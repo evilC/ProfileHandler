@@ -133,7 +133,7 @@ class ProfileHandler {
 			this._PersistentData._Internal.ProfileList[profile] := 1
 			this.SetProfileSelectDDLOptions()
 			this._PersistentData._Internal.CurrentProfile := profile
-			this._PersistentData.PerProfile[profile] := this._PersistentData.PerProfile[oldprofile]
+			this._PersistentData.PerProfile[profile] := this.ObjFullyClone(this._PersistentData.PerProfile[oldprofile])
 			this.ChangeProfile()
 		}
 	}
@@ -152,7 +152,7 @@ class ProfileHandler {
 			this._PersistentData._Internal.ProfileList[profile] := 1
 			this.SetProfileSelectDDLOptions()
 			this._PersistentData._Internal.CurrentProfile := profile
-			this._PersistentData.PerProfile[profile] := this._PersistentData.PerProfile[oldprofile]
+			this._PersistentData.PerProfile[profile] := this.ObjFullyClone(this._PersistentData.PerProfile[oldprofile])
 			this._PersistentData.PerProfile.Delete(oldprofile)
 			this.ChangeProfile()
 		}
@@ -271,4 +271,15 @@ class ProfileHandler {
 		GuiControl,, % this.hProfileSelectDDL, % list
 	}
 	
+	; Deep Clone an object
+	; http://www.autohotkey.com/board/topic/103411-cloned-object-modifying-original-instantiation/#entry638500
+	ObjFullyClone(obj) {
+		nobj := ObjClone(obj)
+		for k,v in nobj {
+			if IsObject(v){
+				nobj[k] := this.ObjFullyClone(v)
+			}
+		}
+		return nobj
+	}
 }
