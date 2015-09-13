@@ -98,6 +98,16 @@ class ProfileHandler {
 		this.ChangeProfile()
 	}
 	
+	; Optional Callback to be called before profile load
+	SetPreLoadCallback(callback){
+		this._PreLoadCallback := callback
+	}
+	
+	; Optional Callback to be called after profile load
+	SetPostLoadCallback(callback){
+		this._PostLoadCallback := callback
+	}
+	
 	; Adds a new profile
 	AddProfile(){
 		InputBox, profile, Add Profile, Enter new profile name,,300, 100
@@ -197,6 +207,9 @@ class ProfileHandler {
 	ChangeProfile(){
 		this._PersistentData._Internal.CurrentProfile := this._PersistentData._Internal.CurrentProfile
 		this.SetProfileSelectDDLOption(this._PersistentData._Internal.CurrentProfile)
+		if (IsObject(this._PreLoadCallback)){
+			this._PreLoadCallback.()
+		}
 		; Process PerProfile Objects
 		for Section, items in this._PersistentObjects.PerProfile {
 			for name, obj in items {
@@ -221,6 +234,9 @@ class ProfileHandler {
 		}
 		; Flush profile to disk
 		this.WriteProfiles()
+		if (IsObject(this._PostLoadCallback)){
+			this._PostLoadCallback.()
+		}
 	}
 	
 	; Reads this._PersistentData from disk
