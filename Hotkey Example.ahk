@@ -9,6 +9,9 @@ OutputDebug, DBGVIEWCLEAR
 mc := new MyClass()
 return
 
+GuiClose:
+	ExitApp
+
 class MyClass {
 	__New(){
 		this.ph := new ProfileHandler()	; Cause the GuiControls to be added for the ProfileHandler, but do not Initialize yet
