@@ -290,8 +290,11 @@ class ProfileHandler {
 	
 	; Populate the list of profiles in the Profile Select DLL
 	SetProfileSelectDDLOptions(){
-		list := ""
+		list := "Default"
 		for key in this._PersistentData._Internal.ProfileList {
+			if (key = "Default"){
+				continue
+			}
 			list .= "|" key
 		}
 		GuiControl,, % this.hProfileSelectDDL, % list
