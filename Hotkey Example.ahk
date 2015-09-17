@@ -32,7 +32,7 @@ class MyClass {
 		this.GlobalGuiControls.MyCheck := new PersistentGuiControl(this.MyCheckChanged.Bind(this), "CheckBox", "xm", "Global CheckBox (Not affected by Current Profile)", "1")
 		
 		this.HotClass.DisableHotkeys()
-		Hotkeys := {}
+		this.Hotkeys := {}
 		Loop 1 {
 			name := "hk" A_Index
 			Gui, Add, Text, w100 xm yp+30, Per-Profile Hotkey

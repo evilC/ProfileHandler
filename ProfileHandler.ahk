@@ -43,6 +43,7 @@ class ProfileHandler {
 		; Work out sizes of the various elements
 		this._Width := width
 		this._SingleRow := singlerow
+		this.ProfileLoading:= 0
 		
 		SplitPath, % A_ScriptName,,,,ScriptName
 		this._ININame := ScriptName ".ini"
@@ -207,7 +208,8 @@ class ProfileHandler {
 	; Change to a new profile.
 	; this._PersistentData._Internal.CurrentProfile should hold the name for the new profile
 	ChangeProfile(){
-		this._PersistentData._Internal.CurrentProfile := this._PersistentData._Internal.CurrentProfile
+		this.ProfileLoading := 1
+		;this._PersistentData._Internal.CurrentProfile := this._PersistentData._Internal.CurrentProfile
 		this.SetProfileSelectDDLOption(this._PersistentData._Internal.CurrentProfile)
 		if (IsObject(this._PreLoadCallback)){
 			this._PreLoadCallback.()
@@ -239,6 +241,7 @@ class ProfileHandler {
 		if (IsObject(this._PostLoadCallback)){
 			this._PostLoadCallback.()
 		}
+		this.ProfileLoading := 0
 	}
 	
 	; Reads this._PersistentData from disk
