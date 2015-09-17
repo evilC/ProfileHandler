@@ -41,7 +41,6 @@ class ProfileHandler {
 	__New(width := 300, singlerow := 0){
 		; Inject the Profile Handler GuiControls
 		; Work out sizes of the various elements
-
 		this._Width := width
 		this._SingleRow := singlerow
 		
@@ -89,7 +88,10 @@ class ProfileHandler {
 	
 	; Initialize the ProfileHandler
 	; Reads settings file and initializes state of all objects
-	Init(objects){
+	Init(objects := -1){
+		if (objects = -1){
+			objects := {}
+		}
 		this._PersistentData := {}
 		this._PersistentObjects := objects
 
@@ -247,7 +249,12 @@ class ProfileHandler {
 			; Non-existant file.
 			this._PersistentData := {_Internal: {CurrentProfile: "Default", ProfileList: {Default: 1}}, Global: {}, PerProfile: {}}
 		} else {
-			this._PersistentData := JSON.Load(str)
+			try {
+				this._PersistentData := JSON.Load(str)
+			} catch {
+				msgbox % "Failed to load settings"
+				ExitApp
+			}
 		}
 		this.SetProfileSelectDDLOptions()
 	}
